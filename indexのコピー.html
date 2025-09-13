@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>ハッキング体験 | データの取得</title>
+
+  <!-- Fonts & Icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&family=Noto+Sans+JP:wght@400;500;700&family=Roboto+Mono&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+  <!-- Main stylesheet -->
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- Video Background -->
+  <div class="video-background">
+    <video autoplay muted loop>
+      <source src="https://raw.githubusercontent.com/kikukick/assets/main/0826%20(1).mp4" type="video/mp4">
+    </video>
+  </div>
+
+  <!-- Header -->
+  <header class="site-header">
+    <div class="header-content">
+      <div class="brand">
+        <span class="brand-main">ハッキング体験</span>
+        <span class="brand-sub">データの取得</span>
+      </div>
+
+      <div class="header-right">
+        <div id="authButtons" style="display: flex; gap: 10px;">
+          <button id="loginBtn" class="btn btn-outline">
+            <i class="fas fa-sign-in-alt"></i>
+            <span>ログイン</span>
+          </button>
+          <button id="signupBtn" class="btn btn-primary">
+            <i class="fas fa-user-plus"></i>
+            <span>新規登録</span>
+          </button>
+        </div>
+        <div id="accountButtonContainer" style="display: none;">
+          <button id="accountBtn" class="btn-icon" aria-label="アカウント設定">
+            <i class="fas fa-user-circle" style="font-size: 1.5rem;"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Auth Modal -->
+  <div id="authModal" class="modal">
+    <div class="modal-overlay"></div>
+    <div class="auth-container">
+      <button class="modal-close" id="closeAuthModal" aria-label="閉じる">&times;</button>
+      <!-- Tabs -->
+      <div class="auth-tabs">
+        <button type="button" class="tab-button active" data-tab="login">ログイン</button>
+        <button type="button" class="tab-button" data-tab="signup">新規登録</button>
+      </div>
+
+      <!-- Login Form -->
+      <form id="loginForm" class="auth-form">
+        <div class="form-group">
+          <label for="loginUsername">ユーザー名</label>
+          <div class="input-group">
+            <i class="fas fa-user"></i>
+            <input type="text" id="loginUsername" class="form-control" placeholder="ユーザー名を入力" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="loginPassword">パスワード</label>
+          <input type="password" id="loginPassword" class="form-control" placeholder="パスワードを入力" required>
+        </div>
+        <button type="submit" class="btn btn-primary btn-block">ログイン</button>
+      </form>
+
+      <!-- Signup Form -->
+      <form id="signupForm" class="auth-form" style="display: none;">
+        <div class="form-group">
+          <label for="signupUsername">ユーザー名</label>
+          <div class="input-group">
+            <i class="fas fa-user"></i>
+            <input type="text" id="signupUsername" class="form-control" placeholder="ユーザー名を入力" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="signupPassword">パスワード</label>
+          <input type="password" id="signupPassword" class="form-control" placeholder="パスワードを入力" required>
+        </div>
+        <button type="submit" class="btn btn-primary btn-block">登録</button>
+      </form>
+    </div>  
+  </div>
+
+  <main class="main-content" style="padding: 100px 20px; min-height: calc(100vh - 80px);">
+  </main>
+
+  <!-- Footer -->
+  <footer class="site-footer" style="background: rgba(10, 10, 20, 0.8); padding: 20px 0; margin-top: auto; border-top: 1px solid rgba(0, 180, 216, 0.2);">
+    <div class="container">
+      <div class="footer-content" style="text-align: center;">
+        <div class="copyright" style="color: var(--text-secondary);">
+          &copy; 2025 ハッキング体験 - データの取得 All Rights Reserved.
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Account Settings Modal -->
+  <div id="accountSettingsModal" class="modal">
+    <div class="modal-card" style="max-width: 400px;">
+      <button type="button" class="modal-close" id="closeAccountSettings">&times;</button>
+      <h3 style="margin-bottom: 12px;">アカウント設定</h3>
+      <div class="modal-body">
+        <form id="changePasswordForm">
+          <div class="form-group">
+            <label for="currentPassword">現在のパスワード</label>
+              <input type="password" id="currentPassword" class="form-control" required>
+          </div>
+          <div class="form-group">
+            <label for="newPassword">新しいパスワード</label>
+              <input type="password" id="newPassword" class="form-control" required>
+          </div>
+          <button type="submit" class="btn btn-primary btn-block">パスワードを変更</button>
+        </form>
+        <hr>
+        <button id="logoutBtn" class="btn btn-outline btn-block" type="button">ログアウト</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Scripts -->
+  <script>
+    // Error handling for scripts
+    window.addEventListener('error', function(e) {
+      console.error('Script error:', e.message, 'in', e.filename, 'line', e.lineno);
+    });
+  </script>
+  <script src="auth.js"></script>
+  <script src="app.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      console.log('Page loaded successfully');
+      
+      // Debug: Check if buttons are found
+      const loginBtn = document.getElementById('loginBtn');
+      const signupBtn = document.getElementById('signupBtn');
+      console.log('Login button found:', !!loginBtn);
+      console.log('Signup button found:', !!signupBtn);
+      
+      // Add temporary debug click handlers
+      if (loginBtn) {
+        loginBtn.addEventListener('click', function(e) {
+          console.log('Login button clicked');
+          e.preventDefault();
+          const authModal = document.getElementById('authModal');
+          console.log('Auth modal found:', !!authModal);
+          if (authModal) {
+            console.log('Showing auth modal');
+            authModal.style.display = 'flex';
+            setTimeout(() => {
+              authModal.classList.add('show');
+            }, 10);
+          }
+        });
+      }
+    });
+  </script>
+
+
+</body>
+</html>
